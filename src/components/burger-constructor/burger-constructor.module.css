@@ -1,0 +1,54 @@
+.section {
+  max-width: 600px;
+  min-width: 600px;
+}
+
+.container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 464px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.container::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  height: 292px;
+}
+.container::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item svg {
+  cursor: pointer;
+}
+
+.order {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 40px;
+}
+
+.price {
+  display: flex;
+  gap: 8px;
+}
+
+.price svg {
+  width: 36px;
+  height: 36px;
+}

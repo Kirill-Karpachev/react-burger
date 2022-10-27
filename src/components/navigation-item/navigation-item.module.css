@@ -1,0 +1,19 @@
+.item {
+  display: flex;
+  gap: 8px;
+  text-decoration: none;
+  align-items: center;
+}
+
+.item:hover {
+  color: #F2F2F3;
+}
+
+.item:hover svg {
+  fill: #F2F2F3;
+}
+
+.active {
+  color: #F2F2F3;
+}
+
