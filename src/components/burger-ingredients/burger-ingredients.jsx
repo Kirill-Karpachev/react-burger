@@ -2,10 +2,10 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import IngredientColumn from "../ingredient-column/ingredient-column";
 import { propTypesData } from "../utils/types";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import burgerIngredientStyle from "./burger-ingredients.module.css";
 
-function BurgerIngredients(props) {
+function BurgerIngredients({ ingredients }) {
   const [current, setCurrent] = React.useState("one");
 
   return (
@@ -23,16 +23,24 @@ function BurgerIngredients(props) {
         </Tab>
       </div>
       <ul className={burgerIngredientStyle.container}>
-        <IngredientColumn data={props.data} type="bun" title="Булки" />
-        <IngredientColumn data={props.data} type="sauce" title="Соусы" />
-        <IngredientColumn data={props.data} type="main" title="Начинки" />
+        <IngredientColumn ingredients={ingredients} type="bun" title="Булки" />
+        <IngredientColumn
+          ingredients={ingredients}
+          type="sauce"
+          title="Соусы"
+        />
+        <IngredientColumn
+          ingredients={ingredients}
+          type="main"
+          title="Начинки"
+        />
       </ul>
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(propTypesData).isRequired,
+  ingredients: PropTypes.arrayOf(propTypesData).isRequired,
 };
 
 export default BurgerIngredients;
