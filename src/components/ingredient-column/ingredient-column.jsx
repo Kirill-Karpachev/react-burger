@@ -10,14 +10,7 @@ function IngredientColumn({ title, type, ingredients }) {
       <ul className={`${ingredientColumnStyles.column} mb-10`}>
         {ingredients.map((ingredient) => {
           if (ingredient.type === type) {
-            return (
-              <Ingredient
-                image={ingredient.image}
-                price={ingredient.price}
-                name={ingredient.name}
-                key={ingredient._id}
-              />
-            );
+            return <Ingredient ingredient={ingredient} key={ingredient._id} />;
           }
         })}
       </ul>
