@@ -1,7 +1,7 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import IngredientColumn from "../ingredient-column/ingredient-column";
-import { propTypesData } from "../utils/types";
+import { propTypesIngredient } from "../utils/types";
 import PropTypes from "prop-types";
 import burgerIngredientStyle from "./burger-ingredients.module.css";
 
@@ -24,6 +24,7 @@ function BurgerIngredients({ ingredients }) {
       </div>
       <ul className={burgerIngredientStyle.container}>
         <IngredientColumn ingredients={ingredients} type="bun" title="Булки" />
+
         <IngredientColumn
           ingredients={ingredients}
           type="sauce"
@@ -40,7 +41,7 @@ function BurgerIngredients({ ingredients }) {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(propTypesData).isRequired,
+  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
 };
 
 export default BurgerIngredients;

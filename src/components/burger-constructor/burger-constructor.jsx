@@ -5,7 +5,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { propTypesData } from "../utils/types";
+import { propTypesIngredient } from "../utils/types";
 import PropTypes from "prop-types";
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
@@ -91,7 +91,7 @@ function BurgerConstructor({ ingredients }) {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(propTypesData).isRequired,
+  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
 };
 
 export default BurgerConstructor;

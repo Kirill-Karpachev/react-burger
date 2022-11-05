@@ -2,33 +2,33 @@ import React from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import { getIngredients } from "../utils/burger-api";
+import { NORMA_API } from "../utils/const";
 import appStyles from "./app.module.css";
 
 function App() {
-  const linkIngredients = "https://norma.nomoreparties.space/api/ingredients";
   const [ingredients, setIngredients] = React.useState([]);
+  const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
-    fetch(linkIngredients)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
+    getIngredients(NORMA_API)
       .then((ingredients) => {
         setIngredients(ingredients.data);
       })
-      .catch((err) => console.log(`Ошибка загрузки данных - ${err}`));
+      .catch(() => setError(true));
   }, []);
 
   return (
     <div className={appStyles.app}>
       <AppHeader />
-      <main className={appStyles.main}>
-        <BurgerIngredients ingredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients} />
-      </main>
+      {error ? (
+        <p className={`${appStyles.error} text text_type_main-large`}>Ошибка загрузки данных.</p>
+      ) : (
+        <main className={appStyles.main}>
+          <BurgerIngredients ingredients={ingredients} />
+          <BurgerConstructor ingredients={ingredients} />
+        </main>
+      )}
     </div>
   );
 }

@@ -6,7 +6,7 @@ import {
 import ingredientStyle from "./ingredient.module.css";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { propTypesData } from "../utils/types";
+import { propTypesIngredient } from "../utils/types";
 
 function Ingredient({ ingredient }) {
   const [ingredientDetail, setIngredientDetail] = React.useState(false);
@@ -42,7 +42,7 @@ function Ingredient({ ingredient }) {
 }
 
 Ingredient.propTypes = {
-  ingredient: propTypesData.isRequired,
+  ingredient: propTypesIngredient.isRequired,
 };
 
 export default Ingredient;

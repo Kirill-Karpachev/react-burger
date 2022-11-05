@@ -1,7 +1,7 @@
 import Ingredient from "../ingredient/ingredient";
 import PropTypes from "prop-types";
 import ingredientColumnStyles from "./ingredient-column.module.css";
-import { propTypesData } from "../utils/types";
+import { propTypesIngredient } from "../utils/types";
 
 function IngredientColumn({ title, type, ingredients }) {
   return (
@@ -21,7 +21,7 @@ function IngredientColumn({ title, type, ingredients }) {
 IngredientColumn.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  ingredients: PropTypes.arrayOf(propTypesData).isRequired,
+  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
 };
 
 export default IngredientColumn;
