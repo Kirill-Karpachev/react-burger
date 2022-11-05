@@ -22,3 +22,11 @@
   background: #2F2F37;
   margin-bottom: 52px;
 }
+
+.column {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+}

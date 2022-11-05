@@ -13,7 +13,7 @@ function Ingredient({ ingredient }) {
 
   return (
     <>
-      <li
+      <div
         className={ingredientStyle.item}
         onClick={() => setIngredientDetail(true)}
       >
@@ -30,7 +30,7 @@ function Ingredient({ ingredient }) {
         <p className={`${ingredientStyle.text} text text_type_main-default`}>
           {ingredient.name}
         </p>
-      </li>
+      </div>
 
       {ingredientDetail && (
         <Modal onClose={() => setIngredientDetail(false)}>

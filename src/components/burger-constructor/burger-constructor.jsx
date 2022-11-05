@@ -14,6 +14,7 @@ import OrderDetails from "../order-details/order-details";
 function BurgerConstructor({ ingredients }) {
   const [orderDetails, setOrderDetails] = React.useState(false);
   const bunImage = ingredients[0] === undefined ? "" : ingredients[0].image;
+  const initialValue = 0;
 
   return (
     <>
@@ -70,7 +71,9 @@ function BurgerConstructor({ ingredients }) {
           <p
             className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
           >
-            610
+            {ingredients
+              .map((ingredient) => ingredient.price)
+              .reduce((previous, current) => previous + current, initialValue)}
             <CurrencyIcon type="primary" />
           </p>
           <div onClick={() => setOrderDetails(true)}>

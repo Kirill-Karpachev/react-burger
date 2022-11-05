@@ -1,12 +1,17 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import IngredientColumn from "../ingredient-column/ingredient-column";
 import { propTypesIngredient } from "../utils/types";
 import PropTypes from "prop-types";
 import burgerIngredientStyle from "./burger-ingredients.module.css";
+import Ingredient from "../ingredient/ingredient";
 
 function BurgerIngredients({ ingredients }) {
   const [current, setCurrent] = React.useState("one");
+  const ingredientsTypes = [
+    { type: "bun", title: "Булки", id: 1 },
+    { type: "sauce", title: "Соусы", id: 2 },
+    { type: "main", title: "Начинки", id: 3 },
+  ];
 
   return (
     <section className={burgerIngredientStyle.section}>
@@ -23,18 +28,20 @@ function BurgerIngredients({ ingredients }) {
         </Tab>
       </div>
       <ul className={burgerIngredientStyle.container}>
-        <IngredientColumn ingredients={ingredients} type="bun" title="Булки" />
-
-        <IngredientColumn
-          ingredients={ingredients}
-          type="sauce"
-          title="Соусы"
-        />
-        <IngredientColumn
-          ingredients={ingredients}
-          type="main"
-          title="Начинки"
-        />
+        {ingredientsTypes.map((ingredientType) => (
+          <article key={ingredientType.id}>
+            <h3 className="text text_type_main-medium mb-6">
+              {ingredientType.title}
+            </h3>
+            <li className={`${burgerIngredientStyle.column} mb-10`}>
+              {ingredients
+                .filter((ingredient) => ingredient.type === ingredientType.type)
+                .map((ingredient) => (
+                  <Ingredient ingredient={ingredient} key={ingredient._id} />
+                ))}
+            </li>
+          </article>
+        ))}
       </ul>
     </section>
   );
