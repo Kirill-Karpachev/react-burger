@@ -1,0 +1,32 @@
+.container {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+  max-height: 712px;
+}
+
+.section {
+  max-width: 600px;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.container::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  height: 492px;
+}
+.container::-webkit-scrollbar-track {
+  background: #2F2F37;
+  margin-bottom: 52px;
+}
+
+.column {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+}
