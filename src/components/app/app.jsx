@@ -4,6 +4,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import { getIngredients } from "../utils/burger-api";
 import { NORMA_API } from "../utils/const";
+import { IngredientsContext } from "../utils/ingredients-context";
 import appStyles from "./app.module.css";
 
 function App() {
@@ -22,11 +23,15 @@ function App() {
     <div className={appStyles.app}>
       <AppHeader />
       {error ? (
-        <p className={`${appStyles.error} text text_type_main-large`}>Ошибка загрузки данных.</p>
+        <p className={`${appStyles.error} text text_type_main-large`}>
+          Ошибка загрузки данных.
+        </p>
       ) : (
         <main className={appStyles.main}>
-          <BurgerIngredients ingredients={ingredients} />
-          <BurgerConstructor ingredients={ingredients} />
+          <IngredientsContext.Provider value={{ ingredients }}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </IngredientsContext.Provider>
         </main>
       )}
     </div>

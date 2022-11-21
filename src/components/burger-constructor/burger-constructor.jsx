@@ -5,13 +5,13 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { propTypesIngredient } from "../utils/types";
-import PropTypes from "prop-types";
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { IngredientsContext } from "../utils/ingredients-context";
 
-function BurgerConstructor({ ingredients }) {
+function BurgerConstructor() {
+  const { ingredients } = React.useContext(IngredientsContext);
   const [orderDetails, setOrderDetails] = React.useState(false);
   const bunImage = ingredients[0] === undefined ? "" : ingredients[0].image;
   const initialValue = 0;
@@ -92,9 +92,5 @@ function BurgerConstructor({ ingredients }) {
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
-};
 
 export default BurgerConstructor;

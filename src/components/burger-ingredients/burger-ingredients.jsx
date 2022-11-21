@@ -1,17 +1,19 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
-import { propTypesIngredient } from "../utils/types";
-import PropTypes from "prop-types";
 import burgerIngredientStyle from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
+import { IngredientsContext } from "../utils/ingredients-context";
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
+  const { ingredients } = React.useContext(IngredientsContext);
   const [current, setCurrent] = React.useState("one");
   const ingredientsTypes = [
     { type: "bun", title: "Булки", id: 1 },
     { type: "sauce", title: "Соусы", id: 2 },
     { type: "main", title: "Начинки", id: 3 },
   ];
+
+  
 
   return (
     <section className={burgerIngredientStyle.section}>
@@ -46,9 +48,5 @@ function BurgerIngredients({ ingredients }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
-};
 
 export default BurgerIngredients;
