@@ -1,41 +1,67 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import { useState, useEffect } from "react";
 import burgerIngredientStyle from "./burger-ingredients.module.css";
 import Ingredient from "../ingredient/ingredient";
-import { IngredientsContext } from "../utils/ingredients-context";
+import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 
 function BurgerIngredients() {
-  const { ingredients } = React.useContext(IngredientsContext);
-  const [current, setCurrent] = React.useState("one");
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const [current, setCurrent] = useState("one");
+
+  const [bunRef, inViewBun] = useInView({ threshold: 0 });
+  const [sauceRef, inViewSauce] = useInView({ threshold: 0 });
+  const [mainRef, inViewMain] = useInView({ threshold: 0 });
+
   const ingredientsTypes = [
-    { type: "bun", title: "Булки", id: 1 },
-    { type: "sauce", title: "Соусы", id: 2 },
-    { type: "main", title: "Начинки", id: 3 },
+    { type: "bun", title: "Булки", id: 1, ref: bunRef },
+    { type: "sauce", title: "Соусы", id: 2, ref: sauceRef },
+    { type: "main", title: "Начинки", id: 3, ref: mainRef },
   ];
 
-  
+  const handleChangeIngredient = (id) => {
+    setCurrent(id);
+    document.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (inViewBun) {
+      setCurrent("bun");
+    } else if (inViewSauce) {
+      setCurrent("sauce");
+    } else if (inViewMain) {
+      setCurrent("main");
+    }
+  }, [inViewBun, inViewSauce, inViewMain]);
 
   return (
     <section className={burgerIngredientStyle.section}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
       <div className="mb-10" style={{ display: "flex" }}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
-          Булки
-        </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
-          Соусы
-        </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
-          Начинка
-        </Tab>
+        {ingredientsTypes.map((ingredientType) => (
+          <Tab
+            key={ingredientType.id}
+            value={ingredientType.type}
+            active={current === ingredientType.type}
+            onClick={handleChangeIngredient}
+          >
+            {ingredientType.title}
+          </Tab>
+        ))}
       </div>
       <ul className={burgerIngredientStyle.container}>
         {ingredientsTypes.map((ingredientType) => (
           <article key={ingredientType.id}>
-            <h3 className="text text_type_main-medium mb-6">
+            <h3
+              id={ingredientType.type}
+              className="text text_type_main-medium mb-6"
+            >
               {ingredientType.title}
             </h3>
-            <li className={`${burgerIngredientStyle.column} mb-10`}>
+            <li
+              ref={ingredientType.ref}
+              className={`${burgerIngredientStyle.column} mb-10`}
+            >
               {ingredients
                 .filter((ingredient) => ingredient.type === ingredientType.type)
                 .map((ingredient) => (

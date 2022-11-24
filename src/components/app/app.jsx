@@ -1,23 +1,18 @@
-import React from "react";
+import { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import { getIngredients } from "../utils/burger-api";
-import { NORMA_API } from "../utils/const";
-import { IngredientsContext } from "../utils/ingredients-context";
 import appStyles from "./app.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredientsData } from "../../services/actions/ingredients";
 
 function App() {
-  const [ingredients, setIngredients] = React.useState([]);
-  const [error, setError] = React.useState(false);
+  const dispatch = useDispatch();
+  const error = useSelector((store) => store.ingredients.ingredientsFailed);
 
-  React.useEffect(() => {
-    getIngredients(NORMA_API)
-      .then((ingredients) => {
-        setIngredients(ingredients.data);
-      })
-      .catch(() => setError(true));
-  }, []);
+  useEffect(() => {
+    dispatch(getIngredientsData());
+  }, [dispatch]);
 
   return (
     <div className={appStyles.app}>
@@ -28,10 +23,8 @@ function App() {
         </p>
       ) : (
         <main className={appStyles.main}>
-          <IngredientsContext.Provider value={{ ingredients }}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </IngredientsContext.Provider>
+          <BurgerIngredients />
+          <BurgerConstructor />
         </main>
       )}
     </div>

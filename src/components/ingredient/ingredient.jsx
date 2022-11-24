@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Counter,
   CurrencyIcon,
@@ -6,17 +5,36 @@ import {
 import ingredientStyle from "./ingredient.module.css";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { propTypesIngredient } from "../utils/types";
+import { propTypesIngredient } from "../../utils/types";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_INGREDIENT_DETAILS,
+  REMOVE_INGREDIENT_DETAILS,
+} from "../../services/actions/ingredient-details";
 
 function Ingredient({ ingredient }) {
-  const [ingredientDetail, setIngredientDetail] = React.useState(false);
+  const dispatch = useDispatch();
+
+  const openModal = () => {
+    dispatch({
+      type: ADD_INGREDIENT_DETAILS,
+      payload: ingredient,
+    });
+  };
+
+  const closeModal = () => {
+    dispatch({
+      type: REMOVE_INGREDIENT_DETAILS,
+    });
+  };
+
+  const selectIngredient = useSelector(
+    (store) => store.ingredientDetails.ingredientDetails
+  );
 
   return (
     <>
-      <div
-        className={ingredientStyle.item}
-        onClick={() => setIngredientDetail(true)}
-      >
+      <div className={ingredientStyle.item} onClick={openModal}>
         <img src={ingredient.image} alt="" />
         <Counter count={1} size="default" />
         <div className={`${ingredientStyle.price} mt-2 mb-2`}>
@@ -32,9 +50,9 @@ function Ingredient({ ingredient }) {
         </p>
       </div>
 
-      {ingredientDetail && (
-        <Modal onClose={() => setIngredientDetail(false)}>
-          <IngredientDetails ingredient={ingredient} />
+      {selectIngredient && (
+        <Modal onClose={closeModal}>
+          <IngredientDetails />
         </Modal>
       )}
     </>

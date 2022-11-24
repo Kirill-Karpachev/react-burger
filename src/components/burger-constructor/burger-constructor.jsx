@@ -8,13 +8,23 @@ import {
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { IngredientsContext } from "../utils/ingredients-context";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderDetails } from "../../services/actions/ingredients";
 
 function BurgerConstructor() {
-  const { ingredients } = React.useContext(IngredientsContext);
-  const [orderDetails, setOrderDetails] = React.useState(false);
+  const dispatch = useDispatch();
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const [orderModal, setOrderModal] = React.useState(false);
   const bunImage = ingredients[0] === undefined ? "" : ingredients[0].image;
   const initialValue = 0;
+
+  const openModal = () => {
+    dispatch(getOrderDetails(ingredients, setOrderModal));
+  };
+
+  const closeModal = () => {
+    setOrderModal(false);
+  };
 
   return (
     <>
@@ -76,7 +86,7 @@ function BurgerConstructor() {
               .reduce((previous, current) => previous + current, initialValue)}
             <CurrencyIcon type="primary" />
           </p>
-          <div onClick={() => setOrderDetails(true)}>
+          <div onClick={openModal}>
             <Button type="primary" size="large" htmlType="button">
               Оформить заказ
             </Button>
@@ -84,8 +94,8 @@ function BurgerConstructor() {
         </div>
       </section>
 
-      {orderDetails && (
-        <Modal onClose={() => setOrderDetails(false)}>
+      {orderModal && (
+        <Modal onClose={closeModal}>
           <OrderDetails />
         </Modal>
       )}
