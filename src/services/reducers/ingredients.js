@@ -8,9 +8,6 @@ const initialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
-
-  ingredientsConstructor: [],
-
 }
 
 export const ingredientsReducer = (state = initialState, action) => {

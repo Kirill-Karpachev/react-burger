@@ -10,7 +10,6 @@ function Modal({ onClose, children }) {
   React.useEffect(() => {
     function closeEscModal(evt) {
       if (evt.key === "Escape") onClose();
-
     }
 
     document.addEventListener("keydown", closeEscModal);
@@ -37,6 +36,6 @@ function Modal({ onClose, children }) {
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   children: PropTypes.element,
-}
+};
 
 export default Modal;

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Counter,
   CurrencyIcon,
@@ -7,13 +8,24 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { propTypesIngredient } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
+import { useDrag } from "react-dnd";
 import {
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS,
-} from "../../services/actions/ingredient-details";
+} from "../../services/actions/ingredients";
 
 function Ingredient({ ingredient }) {
   const dispatch = useDispatch();
+  const countIngredients = useSelector((store) => store.ingredientsConstructor);
+
+  const count = useMemo(() => {
+    return ingredient.type === "bun" &&
+      ingredient._id === countIngredients.bun._id
+      ? 2
+      : countIngredients.ingredients.filter(
+          (item) => item._id === ingredient._id
+        ).length;
+  }, [ingredient, countIngredients]);
 
   const openModal = () => {
     dispatch({
@@ -32,11 +44,24 @@ function Ingredient({ ingredient }) {
     (store) => store.ingredientDetails.ingredientDetails
   );
 
+  const [{ opacity }, ref] = useDrag({
+    type: "ingredient",
+    item: ingredient,
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ? 0.5 : 1,
+    }),
+  });
+
   return (
     <>
-      <div className={ingredientStyle.item} onClick={openModal}>
+      <div
+        ref={ref}
+        className={ingredientStyle.item}
+        onClick={openModal}
+        style={{ opacity }}
+      >
         <img src={ingredient.image} alt="" />
-        <Counter count={1} size="default" />
+        <Counter count={count} size="default" />
         <div className={`${ingredientStyle.price} mt-2 mb-2`}>
           <p
             className={`${ingredientStyle.text} text text_type_digits-default`}

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 function BurgerIngredients() {
   const ingredients = useSelector((store) => store.ingredients.ingredients);
-  const [current, setCurrent] = useState("one");
+  const [current, setCurrent] = useState("bun");
 
   const [bunRef, inViewBun] = useInView({ threshold: 0 });
   const [sauceRef, inViewSauce] = useInView({ threshold: 0 });
@@ -19,9 +19,9 @@ function BurgerIngredients() {
     { type: "main", title: "Начинки", id: 3, ref: mainRef },
   ];
 
-  const handleChangeIngredient = (id) => {
+  const changeTab = (id) => {
     setCurrent(id);
-    document.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
+    document.querySelector(`#${id}`).scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ function BurgerIngredients() {
             key={ingredientType.id}
             value={ingredientType.type}
             active={current === ingredientType.type}
-            onClick={handleChangeIngredient}
+            onClick={changeTab}
           >
             {ingredientType.title}
           </Tab>

@@ -1,34 +1,82 @@
-import React from "react";
+import { useState, useMemo } from "react";
 import {
   Button,
-  ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderDetails } from "../../services/actions/ingredients";
+import {
+  ADD_BUN_INGREDIENT,
+  ADD_INGREDIENTS,
+  DELETE_ALL_INGREDIENTS,
+  getOrderDetails,
+} from "../../services/actions/ingredients";
+import { useDrop } from "react-dnd";
+import BunElement from "../bun-element/bun-element";
+import StuffingElement from "../stuffing-element/stuffing-element";
+import { v4 as uuidv4 } from "uuid";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const ingredients = useSelector((store) => store.ingredients.ingredients);
-  const [orderModal, setOrderModal] = React.useState(false);
-  const bunImage = ingredients[0] === undefined ? "" : ingredients[0].image;
-  const initialValue = 0;
+  const ingredients = useSelector((store) => store.ingredientsConstructor);
+  const [orderModal, setOrderModal] = useState(false);
+
+  const orderPrice = useMemo(() => {
+    return (
+      (ingredients.bun ? ingredients.bun.price * 2 : 0) +
+      ingredients.ingredients.reduce(
+        (previous, current) => previous + current.price,
+        0
+      )
+    );
+  }, [ingredients]);
+
+  const orderIngredients = [
+    ingredients.bun._id,
+    ...ingredients.ingredients.map((ingredient) => ingredient._id),
+    ingredients.bun._id,
+  ];
 
   const openModal = () => {
-    dispatch(getOrderDetails(ingredients, setOrderModal));
+    dispatch(getOrderDetails(orderIngredients, setOrderModal));
+    dispatch({
+      type: DELETE_ALL_INGREDIENTS,
+    });
   };
 
   const closeModal = () => {
     setOrderModal(false);
   };
 
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(item) {
+      if (item.type === "bun") {
+        return dispatch({
+          type: ADD_BUN_INGREDIENT,
+          payload: item,
+        });
+      }
+      dispatch({
+        type: ADD_INGREDIENTS,
+        payload: { ...item, id: uuidv4() },
+      });
+    },
+  });
+
+  const transform = isHover ? "scale(1.03)" : "scale(1)";
+
   return (
     <>
-      <section className={`${burgerConstructorStyles.section} mt-25`}>
+      <section
+        className={`${burgerConstructorStyles.section} mt-25`}
+        ref={dropTarget}
+      >
         <div
           className="mb-10"
           style={{
@@ -36,58 +84,39 @@ function BurgerConstructor() {
             flexDirection: "column",
             gap: "16px",
             alignItems: "flex-end",
+            transform,
+            transition: "all .1s linear",
           }}
         >
-          <div className="mr-4">
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text="Краторная булка N-200i (верх)"
-              price={200}
-              thumbnail={bunImage}
-            />
-          </div>
+          <BunElement type="top" />
 
           <ul className={burgerConstructorStyles.container}>
-            {ingredients.map((ingredient) => {
-              if (ingredient.type !== "bun") {
-                return (
-                  <li
-                    key={ingredient._id}
-                    className={`${burgerConstructorStyles.item} mr-2`}
-                  >
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      text={ingredient.name}
-                      price={ingredient.price}
-                      thumbnail={ingredient.image}
-                    />
-                  </li>
-                );
-              }
+            {ingredients.ingredients.map((ingredient, index) => {
+              return (
+                <StuffingElement
+                  key={ingredient.id}
+                  ingredient={ingredient}
+                  index={index}
+                />
+              );
             })}
           </ul>
-          <div className="mr-4">
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text="Краторная булка N-200i (низ)"
-              price={200}
-              thumbnail={bunImage}
-            />
-          </div>
+          <BunElement type="bottom" />
         </div>
         <div className={burgerConstructorStyles.order}>
           <p
             className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
           >
-            {ingredients
-              .map((ingredient) => ingredient.price)
-              .reduce((previous, current) => previous + current, initialValue)}
+            {orderPrice}
             <CurrencyIcon type="primary" />
           </p>
           <div onClick={openModal}>
-            <Button type="primary" size="large" htmlType="button">
+            <Button
+              type="primary"
+              size="large"
+              htmlType="button"
+              disabled={!ingredients.bun}
+            >
               Оформить заказ
             </Button>
           </div>

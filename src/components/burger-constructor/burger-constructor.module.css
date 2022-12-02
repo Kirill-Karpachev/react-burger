@@ -26,16 +26,6 @@
   background: #2F2F37;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.item svg {
-  cursor: pointer;
-}
-
 .order {
   display: flex;
   align-items: center;
