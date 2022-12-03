@@ -5,11 +5,11 @@ import {
   DELETE_INGREDIENT,
   MOVE_INGREDIENT
 }
-from '../actions/ingredients';
+from '../actions/ingredient-constructor';
 import update from "immutability-helper";
 
 const initialState = {
-  bun: false,
+  bun: null,
   ingredients: []
 }
 
@@ -46,7 +46,7 @@ export const ingredientsConstructorReducer = (state = initialState, action) => {
     }
     case DELETE_ALL_INGREDIENTS: {
       return {
-        bun: false,
+        bun: null,
         ingredients: []
       }
     }

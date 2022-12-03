@@ -1,10 +1,10 @@
 import {
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS
-} from '../actions/ingredients'
+} from '../actions/ingredient-details'
 
 const initialState = {
-  ingredientDetails: false,
+  ingredientDetails: null,
 }
 
 export const ingredientsDetailsReducer = (state = initialState, action) => {
@@ -16,7 +16,7 @@ export const ingredientsDetailsReducer = (state = initialState, action) => {
     }
     case REMOVE_INGREDIENT_DETAILS: {
       return {
-        ingredientDetails: false
+        ingredientDetails: null
       }
     }
     default: {

@@ -42,3 +42,15 @@
   width: 36px;
   height: 36px;
 }
+
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+  transition: all .1s linear;
+}
+
+.transform {
+  transform: scale(1.03);
+}

@@ -5,6 +5,7 @@ function IngredientDetails() {
   const ingredient = useSelector(
     (store) => store.ingredientDetails.ingredientDetails
   );
+
   return (
     <div className={`${ingredientDetailStyles.details} pt-10 pb-15`}>
       <h2

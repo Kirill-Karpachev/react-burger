@@ -1,11 +1,12 @@
 import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
-  ORDER_DETAILS_FAILED
-} from "../actions/ingredients";
+  ORDER_DETAILS_FAILED,
+  REMOVE_ORDER_DETAILS
+} from "../actions/order-details";
 
 const initialState = {
-  orderDetails: {},
+  orderDetails: null,
   orderDetailsRequest: false,
   orderDetailsFailed: false,
 }
@@ -31,6 +32,12 @@ export const orderDetailsReducer = (state = initialState, action) => {
         ...state,
         orderDetailsFailed: true,
         orderDetailsRequest: false,
+      }
+    }
+    case REMOVE_ORDER_DETAILS: {
+      return {
+        ...state,
+        orderDetails: null,
       }
     }
     default: {

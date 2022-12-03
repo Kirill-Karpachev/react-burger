@@ -13,12 +13,12 @@ function BunElement({ type }) {
         type={type}
         isLocked={true}
         text={
-          bun.name
-            ? `${bun.name} ${type === "top" ? "(верх)" : "(низ)"}`
+          bun?.name
+            ? `${bun?.name} ${type === "top" ? "(верх)" : "(низ)"}`
             : "Выберите булку"
         }
-        price={bun.price}
-        thumbnail={bun.image ? bun.image : loadingBun}
+        price={bun?.price}
+        thumbnail={bun?.image ? bun.image : loadingBun}
       />
     </div>
   );

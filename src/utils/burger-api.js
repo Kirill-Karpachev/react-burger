@@ -1,3 +1,7 @@
+import {
+  NORMA_API
+} from './const'
+
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -5,12 +9,12 @@ function checkResponse(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-export function getIngredients(NORMA_API) {
+export function getIngredients() {
   return fetch(`${NORMA_API}/ingredients`)
     .then(checkResponse)
 }
 
-export function postOrder(NORMA_API, ingredients) {
+export function postOrder(ingredients) {
   return fetch(`${NORMA_API}/orders`, {
       method: "POST",
       headers: {

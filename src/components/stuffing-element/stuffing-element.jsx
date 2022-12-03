@@ -9,7 +9,7 @@ import stuffingElementStyles from "./stuffing-element.module.css";
 import {
   DELETE_INGREDIENT,
   MOVE_INGREDIENT,
-} from "../../services/actions/ingredients";
+} from "../../services/actions/ingredient-constructor";
 import { propTypesIngredient } from "../../utils/types";
 import PropTypes from "prop-types";
 

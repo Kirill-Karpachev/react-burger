@@ -63,7 +63,7 @@ function BurgerIngredients() {
               className={`${burgerIngredientStyle.column} mb-10`}
             >
               {ingredients
-                .filter((ingredient) => ingredient.type === ingredientType.type)
+                ?.filter((ingredient) => ingredient.type === ingredientType.type)
                 .map((ingredient) => (
                   <Ingredient ingredient={ingredient} key={ingredient._id} />
                 ))}

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import {
   Button,
   CurrencyIcon,
@@ -11,8 +11,11 @@ import {
   ADD_BUN_INGREDIENT,
   ADD_INGREDIENTS,
   DELETE_ALL_INGREDIENTS,
+} from "../../services/actions/ingredient-constructor";
+import {
+  REMOVE_ORDER_DETAILS,
   getOrderDetails,
-} from "../../services/actions/ingredients";
+} from "../../services/actions/order-details";
 import { useDrop } from "react-dnd";
 import BunElement from "../bun-element/bun-element";
 import StuffingElement from "../stuffing-element/stuffing-element";
@@ -21,7 +24,7 @@ import { v4 as uuidv4 } from "uuid";
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredientsConstructor);
-  const [orderModal, setOrderModal] = useState(false);
+  const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
 
   const orderPrice = useMemo(() => {
     return (
@@ -33,21 +36,25 @@ function BurgerConstructor() {
     );
   }, [ingredients]);
 
-  const orderIngredients = [
-    ingredients.bun._id,
-    ...ingredients.ingredients.map((ingredient) => ingredient._id),
-    ingredients.bun._id,
-  ];
+  const orderIngredients = useMemo(() => {
+    return [
+      ingredients.bun?._id,
+      ...ingredients.ingredients.map((ingredient) => ingredient._id),
+      ingredients.bun?._id,
+    ];
+  }, [ingredients]);
 
   const openModal = () => {
-    dispatch(getOrderDetails(orderIngredients, setOrderModal));
+    dispatch(getOrderDetails(orderIngredients));
     dispatch({
       type: DELETE_ALL_INGREDIENTS,
     });
   };
 
   const closeModal = () => {
-    setOrderModal(false);
+    dispatch({
+      type: REMOVE_ORDER_DETAILS,
+    });
   };
 
   const [{ isHover }, dropTarget] = useDrop({
@@ -69,8 +76,6 @@ function BurgerConstructor() {
     },
   });
 
-  const transform = isHover ? "scale(1.03)" : "scale(1)";
-
   return (
     <>
       <section
@@ -78,15 +83,9 @@ function BurgerConstructor() {
         ref={dropTarget}
       >
         <div
-          className="mb-10"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            alignItems: "flex-end",
-            transform,
-            transition: "all .1s linear",
-          }}
+          className={`${burgerConstructorStyles.ingredients} ${
+            isHover ? `${burgerConstructorStyles.transform}` : ""
+          } mb-10`}
         >
           <BunElement type="top" />
 
@@ -101,6 +100,7 @@ function BurgerConstructor() {
               );
             })}
           </ul>
+
           <BunElement type="bottom" />
         </div>
         <div className={burgerConstructorStyles.order}>
@@ -123,7 +123,7 @@ function BurgerConstructor() {
         </div>
       </section>
 
-      {orderModal && (
+      {orderDetails && (
         <Modal onClose={closeModal}>
           <OrderDetails />
         </Modal>

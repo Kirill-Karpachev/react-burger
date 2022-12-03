@@ -12,20 +12,22 @@ import { useDrag } from "react-dnd";
 import {
   ADD_INGREDIENT_DETAILS,
   REMOVE_INGREDIENT_DETAILS,
-} from "../../services/actions/ingredients";
+} from "../../services/actions/ingredient-details";
 
 function Ingredient({ ingredient }) {
   const dispatch = useDispatch();
-  const countIngredients = useSelector((store) => store.ingredientsConstructor);
+  const ingredientsConstructorState = useSelector(
+    (store) => store.ingredientsConstructor
+  );
 
   const count = useMemo(() => {
     return ingredient.type === "bun" &&
-      ingredient._id === countIngredients.bun._id
+      ingredient._id === ingredientsConstructorState.bun?._id
       ? 2
-      : countIngredients.ingredients.filter(
+      : ingredientsConstructorState.ingredients.filter(
           (item) => item._id === ingredient._id
         ).length;
-  }, [ingredient, countIngredients]);
+  }, [ingredient, ingredientsConstructorState]);
 
   const openModal = () => {
     dispatch({
@@ -60,7 +62,7 @@ function Ingredient({ ingredient }) {
         onClick={openModal}
         style={{ opacity }}
       >
-        <img src={ingredient.image} alt="" />
+        <img src={ingredient.image} alt={ingredient.name} />
         <Counter count={count} size="default" />
         <div className={`${ingredientStyle.price} mt-2 mb-2`}>
           <p
