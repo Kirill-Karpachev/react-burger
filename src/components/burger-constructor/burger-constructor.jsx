@@ -1,83 +1,122 @@
-import React from "react";
+import { useMemo } from "react";
 import {
   Button,
-  ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { propTypesIngredient } from "../utils/types";
-import PropTypes from "prop-types";
 import burgerConstructorStyles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_BUN_INGREDIENT,
+  ADD_INGREDIENTS,
+  DELETE_ALL_INGREDIENTS,
+} from "../../services/actions/ingredient-constructor";
+import {
+  REMOVE_ORDER_DETAILS,
+  getOrderDetails,
+} from "../../services/actions/order-details";
+import { useDrop } from "react-dnd";
+import BunElement from "../bun-element/bun-element";
+import StuffingElement from "../stuffing-element/stuffing-element";
+import { v4 as uuidv4 } from "uuid";
 
-function BurgerConstructor({ ingredients }) {
-  const [orderDetails, setOrderDetails] = React.useState(false);
-  const bunImage = ingredients[0] === undefined ? "" : ingredients[0].image;
-  const initialValue = 0;
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const ingredients = useSelector((store) => store.ingredientsConstructor);
+  const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
+
+  const orderPrice = useMemo(() => {
+    return (
+      (ingredients.bun ? ingredients.bun.price * 2 : 0) +
+      ingredients.ingredients.reduce(
+        (previous, current) => previous + current.price,
+        0
+      )
+    );
+  }, [ingredients]);
+
+  const orderIngredients = useMemo(() => {
+    return [
+      ingredients.bun?._id,
+      ...ingredients.ingredients.map((ingredient) => ingredient._id),
+      ingredients.bun?._id,
+    ];
+  }, [ingredients]);
+
+  const openModal = () => {
+    dispatch(getOrderDetails(orderIngredients));
+    dispatch({
+      type: DELETE_ALL_INGREDIENTS,
+    });
+  };
+
+  const closeModal = () => {
+    dispatch({
+      type: REMOVE_ORDER_DETAILS,
+    });
+  };
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(item) {
+      if (item.type === "bun") {
+        return dispatch({
+          type: ADD_BUN_INGREDIENT,
+          payload: item,
+        });
+      }
+      dispatch({
+        type: ADD_INGREDIENTS,
+        payload: { ...item, id: uuidv4() },
+      });
+    },
+  });
 
   return (
     <>
-      <section className={`${burgerConstructorStyles.section} mt-25`}>
+      <section
+        className={`${burgerConstructorStyles.section} mt-25`}
+        ref={dropTarget}
+      >
         <div
-          className="mb-10"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            alignItems: "flex-end",
-          }}
+          className={`${burgerConstructorStyles.ingredients} ${
+            isHover ? `${burgerConstructorStyles.transform}` : ""
+          } mb-10`}
         >
-          <div className="mr-4">
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text="Краторная булка N-200i (верх)"
-              price={200}
-              thumbnail={bunImage}
-            />
-          </div>
+          <BunElement type="top" />
 
           <ul className={burgerConstructorStyles.container}>
-            {ingredients.map((ingredient) => {
-              if (ingredient.type !== "bun") {
-                return (
-                  <li
-                    key={ingredient._id}
-                    className={`${burgerConstructorStyles.item} mr-2`}
-                  >
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      text={ingredient.name}
-                      price={ingredient.price}
-                      thumbnail={ingredient.image}
-                    />
-                  </li>
-                );
-              }
+            {ingredients.ingredients.map((ingredient, index) => {
+              return (
+                <StuffingElement
+                  key={ingredient.id}
+                  ingredient={ingredient}
+                  index={index}
+                />
+              );
             })}
           </ul>
-          <div className="mr-4">
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text="Краторная булка N-200i (низ)"
-              price={200}
-              thumbnail={bunImage}
-            />
-          </div>
+
+          <BunElement type="bottom" />
         </div>
         <div className={burgerConstructorStyles.order}>
           <p
             className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
           >
-            {ingredients
-              .map((ingredient) => ingredient.price)
-              .reduce((previous, current) => previous + current, initialValue)}
+            {orderPrice}
             <CurrencyIcon type="primary" />
           </p>
-          <div onClick={() => setOrderDetails(true)}>
-            <Button type="primary" size="large" htmlType="button">
+          <div onClick={openModal}>
+            <Button
+              type="primary"
+              size="large"
+              htmlType="button"
+              disabled={!ingredients.bun}
+            >
               Оформить заказ
             </Button>
           </div>
@@ -85,16 +124,12 @@ function BurgerConstructor({ ingredients }) {
       </section>
 
       {orderDetails && (
-        <Modal onClose={() => setOrderDetails(false)}>
+        <Modal onClose={closeModal}>
           <OrderDetails />
         </Modal>
       )}
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(propTypesIngredient).isRequired,
-};
 
 export default BurgerConstructor;

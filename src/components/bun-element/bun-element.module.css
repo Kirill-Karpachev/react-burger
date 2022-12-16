@@ -1,0 +1,9 @@
+.bun {
+  min-width: 536px;
+}
+
+.plug {
+  min-width: 536px;
+  max-width: 536px;
+  border: dashed 1px #eee;
+}
