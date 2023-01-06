@@ -9,10 +9,3 @@
   margin: 0 auto;
   justify-content: space-between;
 }
-
-.error {
-  display: flex;
-  height: 50vh;
-  align-items: center;
-  justify-content: center;
-}

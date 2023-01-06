@@ -1,36 +1,57 @@
-import { useEffect } from "react";
+import { StrictMode, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import AppHeader from "../app-header/app-header";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import appStyles from "./app.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getIngredientsData } from "../../services/actions/ingredients";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import Constructor from "../../pages/constructor/constructor";
+import Login from "../../pages/login/login";
+import Register from "../../pages/register/register";
+import ForgotPassword from "../../pages/forgot-password/forgot-password";
+import ResetPassword from "../../pages/reset-password/reset-password";
+import ProtectedRoute from "../protected-route/protected-route";
+import Profile from "../../pages/profile/profile";
+import { getUser } from "../../services/actions/user";
 
 function App() {
   const dispatch = useDispatch();
-  const error = useSelector((store) => store.ingredients.ingredientsFailed);
 
   useEffect(() => {
     dispatch(getIngredientsData());
+    dispatch(getUser());
   }, [dispatch]);
 
   return (
     <div className={appStyles.app}>
-      <AppHeader />
-      {error ? (
-        <p className={`${appStyles.error} text text_type_main-large`}>
-          Ошибка загрузки данных.
-        </p>
-      ) : (
-        <main className={appStyles.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      )}
+      <Router>
+        <StrictMode>
+          <AppHeader />
+          <main className={appStyles.main}>
+            <Switch>
+              <Route path="/" component={Constructor} exact />
+              <Route path="/login" exact>
+                <Login />
+              </Route>
+              <ProtectedRoute path="/profile" exact>
+                <Profile />
+              </ProtectedRoute>
+              <Route path="/register" exact>
+                <Register />
+              </Route>
+              <ProtectedRoute path="/forgot-password" exact>
+                <ForgotPassword />
+              </ProtectedRoute>
+              <ProtectedRoute path="/reset-password" exact>
+                <ResetPassword />
+              </ProtectedRoute>
+            </Switch>
+          </main>
+        </StrictMode>
+      </Router>
     </div>
   );
 }

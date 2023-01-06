@@ -11,12 +11,20 @@ import {
   ingredientsConstructorReducer
 } from './ingredients-constructor';
 import {
+  loginReducer
+} from './login';
+import {
   orderDetailsReducer
 } from './order-details';
+import {
+  userReducer
+} from './user';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   ingredientDetails: ingredientsDetailsReducer,
   orderDetails: orderDetailsReducer,
-  ingredientsConstructor: ingredientsConstructorReducer
+  ingredientsConstructor: ingredientsConstructorReducer,
+  login: loginReducer,
+  user: userReducer
 });

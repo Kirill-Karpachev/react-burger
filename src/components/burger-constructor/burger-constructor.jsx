@@ -20,11 +20,14 @@ import { useDrop } from "react-dnd";
 import BunElement from "../bun-element/bun-element";
 import StuffingElement from "../stuffing-element/stuffing-element";
 import { v4 as uuidv4 } from "uuid";
+import { useHistory } from "react-router-dom";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredientsConstructor);
   const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
+  const user = useSelector((store) => store.user.user);
+  const history = useHistory();
 
   const orderPrice = useMemo(() => {
     return (
@@ -45,10 +48,15 @@ function BurgerConstructor() {
   }, [ingredients]);
 
   const openModal = () => {
-    dispatch(getOrderDetails(orderIngredients));
-    dispatch({
-      type: DELETE_ALL_INGREDIENTS,
-    });
+    if(user.email && user.name) {
+      dispatch(getOrderDetails(orderIngredients));
+      dispatch({
+        type: DELETE_ALL_INGREDIENTS,
+      });
+    } else {
+      history.replace({ pathname: '/login' })
+    }
+
   };
 
   const closeModal = () => {
