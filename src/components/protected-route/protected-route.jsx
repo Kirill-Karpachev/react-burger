@@ -1,52 +1,19 @@
 import { useSelector } from "react-redux";
 import { Redirect, Route, useLocation } from "react-router-dom";
 
-function ProtectedRoute({ children, ...rest }) {
-  const user = useSelector((store) => store.user.user);
-  const { isAuth } = useSelector((store) => store.login);
-
+function ProtectedRoute({ onlyUnAuth, children, ...rest }) {
+  const { isAuth } = useSelector((store) => store.user);
   const location = useLocation();
 
-  if (
-    location.pathname === "/reset-password" ||
-    location.pathname === "/forgot-password"
-  ) {
-    return (
-      <Route
-        {...rest}
-        render={({ location }) =>
-          user.email && user.name ? (
-            <Redirect
-              to={{
-                pathname: "/",
-                state: { from: location },
-              }}
-            />
-          ) : (
-            children
-          )
-        }
-      />
-    );
+  if (onlyUnAuth && isAuth) {
+    return <Redirect to={{ from: { pathname: "/" } }} />;
   }
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        (user.email && user.name) || isAuth ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  );
+  if (!onlyUnAuth && !isAuth) {
+    return <Redirect to={{ pathname: "/login", state: { from: location } }} />;
+  }
+
+  return <Route {...rest}>{children}</Route>;
 }
 
 export default ProtectedRoute;

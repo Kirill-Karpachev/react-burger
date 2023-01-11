@@ -1,6 +1,5 @@
 import {
   LOGIN_FAILED,
-  LOGIN_FORM,
   LOGIN_REQUEST,
   LOGIN_SUCCESS
 } from "../actions/login"
@@ -9,26 +8,12 @@ import {
 } from "../actions/user"
 
 const initialState = {
-  form: {
-    email: '',
-    password: '',
-  },
   loginRequest: false,
   loginFailed: false,
-  isAuth: false
 }
 
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_FORM: {
-      return {
-        ...state,
-        form: {
-          ...state.form,
-          [action.name]: action.value
-        }
-      }
-    }
     case LOGIN_REQUEST: {
       return {
         ...state,
@@ -40,7 +25,6 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         loginRequest: false,
         loginFailed: false,
-        isAuth: true
       }
     }
     case LOGIN_FAILED: {
@@ -56,8 +40,7 @@ export const loginReducer = (state = initialState, action) => {
         form: {
           email: '',
           password: '',
-        },
-        isAuth: false
+        }
       }
     }
     default: {

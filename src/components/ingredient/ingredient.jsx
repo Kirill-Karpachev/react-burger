@@ -4,18 +4,13 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyle from "./ingredient.module.css";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import { propTypesIngredient } from "../../utils/types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
-import {
-  ADD_INGREDIENT_DETAILS,
-  REMOVE_INGREDIENT_DETAILS,
-} from "../../services/actions/ingredient-details";
+import { Link, useLocation } from "react-router-dom";
 
 function Ingredient({ ingredient }) {
-  const dispatch = useDispatch();
+  const location = useLocation();
   const ingredientsConstructorState = useSelector(
     (store) => store.ingredientsConstructor
   );
@@ -29,23 +24,6 @@ function Ingredient({ ingredient }) {
         ).length;
   }, [ingredient, ingredientsConstructorState]);
 
-  const openModal = () => {
-    dispatch({
-      type: ADD_INGREDIENT_DETAILS,
-      payload: ingredient,
-    });
-  };
-
-  const closeModal = () => {
-    dispatch({
-      type: REMOVE_INGREDIENT_DETAILS,
-    });
-  };
-
-  const selectIngredient = useSelector(
-    (store) => store.ingredientDetails.ingredientDetails
-  );
-
   const [{ opacity }, ref] = useDrag({
     type: "ingredient",
     item: ingredient,
@@ -55,34 +33,27 @@ function Ingredient({ ingredient }) {
   });
 
   return (
-    <>
-      <div
-        ref={ref}
-        className={ingredientStyle.item}
-        onClick={openModal}
-        style={{ opacity }}
-      >
-        <img src={ingredient.image} alt={ingredient.name} />
-        <Counter count={count} size="default" />
-        <div className={`${ingredientStyle.price} mt-2 mb-2`}>
-          <p
-            className={`${ingredientStyle.text} text text_type_digits-default`}
-          >
-            {ingredient.price}
-          </p>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p className={`${ingredientStyle.text} text text_type_main-default`}>
-          {ingredient.name}
+    <Link
+      to={{
+        pathname: `/ingredient/${ingredient._id}`,
+        state: { background: location },
+      }}
+      ref={ref}
+      className={ingredientStyle.item}
+      style={{ opacity }}
+    >
+      <img src={ingredient.image} alt={ingredient.name} />
+      <Counter count={count} size="default" />
+      <div className={`${ingredientStyle.price} mt-2 mb-2`}>
+        <p className={`${ingredientStyle.text} text text_type_digits-default`}>
+          {ingredient.price}
         </p>
+        <CurrencyIcon type="primary" />
       </div>
-
-      {selectIngredient && (
-        <Modal onClose={closeModal}>
-          <IngredientDetails />
-        </Modal>
-      )}
-    </>
+      <p className={`${ingredientStyle.text} text text_type_main-default`}>
+        {ingredient.name}
+      </p>
+    </Link>
   );
 }
 

@@ -4,10 +4,10 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { getUser, signOut } from "../../services/actions/user";
+import { signOut, updateToken, updateUser } from "../../services/actions/user";
 import { getCookie } from "../../utils/util";
 import profileStyles from "./profile.module.css";
 
@@ -15,14 +15,33 @@ function Profile() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
-
   const { name, email } = useSelector((store) => store.user.user);
 
+  const [nameValue, setNameValue] = useState(name);
+  const [emailValue, setEmailValue] = useState(email);
+  const [disabled, setDisabled] = useState(true);
+
+  const updateUserForm = (e) => {
+    e.preventDefault();
+    const form = {
+      name: nameValue,
+      email: emailValue,
+    };
+    dispatch(updateUser(form));
+    dispatch(updateToken());
+  };
+
+  const resetUserForm = () => {
+    setNameValue(name);
+    setEmailValue(email);
+  };
+
   const logout = useCallback(() => {
-    dispatch(signOut(getCookie("refreshToken"), history));
+    dispatch(
+      signOut({ token: getCookie("refreshToken") }, () =>
+        history.replace({ pathname: "/login" })
+      )
+    );
   }, [history, dispatch]);
 
   return (
@@ -59,7 +78,7 @@ function Profile() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <form>
+      <form onSubmit={updateUserForm}>
         <Input
           type={"text"}
           placeholder={"Имя"}
@@ -68,31 +87,42 @@ function Profile() {
           error={false}
           errorText={"Ошибка"}
           size={"default"}
-          onIconClick={(e) => e}
+          onIconClick={(e) => setDisabled(false)}
           extraClass="mb-6"
-          value={name}
-          onChange={(e) => e}
+          value={nameValue}
+          onChange={(e) => setNameValue(e.target.value)}
+          disabled={disabled}
         />
         <EmailInput
           name={"email"}
           placeholder="Логин"
           isIcon={true}
           extraClass="mb-6"
-          onChange={(e) => e}
-          value={email}
+          onChange={(e) => setEmailValue(e.target.value)}
+          value={emailValue}
         />
         <PasswordInput
           name={"password"}
           icon="EditIcon"
           value="password"
+          extraClass="mb-6"
           onChange={(e) => e}
         />
-        <Button htmlType="button" type="secondary" size="medium">
-          Отмена
-        </Button>
-        <Button htmlType="submit" type="primary" size="medium">
-          Сохранить
-        </Button>
+        {!(name === nameValue && email === emailValue) && (
+          <div className={profileStyles.buttons}>
+            <Button
+              onClick={resetUserForm}
+              htmlType="button"
+              type="secondary"
+              size="medium"
+            >
+              Отмена
+            </Button>
+            <Button htmlType="submit" type="primary" size="medium">
+              Сохранить
+            </Button>
+          </div>
+        )}
       </form>
     </div>
   );

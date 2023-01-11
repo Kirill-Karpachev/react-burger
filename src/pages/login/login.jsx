@@ -3,51 +3,41 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { getLogin, LOGIN_FORM } from "../../services/actions/login";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { getLogin } from "../../services/actions/login";
 import loginStyles from "./login.module.css";
 
 function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { form, isAuth } = useSelector((store) => store.login);
-  const user = useSelector((store) => store.user.user);
 
-  function onChange(e) {
-    dispatch({
-      type: LOGIN_FORM,
-      name: e.target.name,
-      value: e.target.value,
-    });
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  function signIn(e) {
+  const signIn = (e) => {
     e.preventDefault();
-    const data = {
-      email: form.email,
-      password: form.password,
+    const form = {
+      email,
+      password,
     };
-    dispatch(getLogin(data, () => history.replace("/")));
-  }
-
-  if (isAuth || (user.email && user.name)) {
-    return <Redirect to={"/"} />;
-  }
+    dispatch(getLogin(form, () => history.replace("/")));
+  };
 
   return (
     <div className={loginStyles.content}>
       <h2 className="text text_type_main-medium">Вход</h2>
       <form onSubmit={signIn} className={`${loginStyles.form} mt-6 mb-20`}>
         <EmailInput
-          onChange={onChange}
-          value={form.email}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
           name={"email"}
           isIcon={false}
         />
         <PasswordInput
-          onChange={onChange}
-          value={form.password}
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
           name={"password"}
         />
         <Button htmlType="submit" type="primary" size="medium">

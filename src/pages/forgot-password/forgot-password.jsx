@@ -2,25 +2,39 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { forgetPassword } from "../../services/actions/reset-password";
 import forgotPasswordStyles from "./forgot-password.module.css";
 
 function ForgotPassword() {
   const history = useHistory();
-  const reset = useCallback(() => {
-    history.replace({ pathname: "/reset-password" });
-  }, [history]);
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+
+  const forgetPasswordForm = (e) => {
+    e.preventDefault();
+    dispatch(
+      forgetPassword({ email: email }, () => history.replace("/reset-password"))
+    );
+  };
+
   return (
     <div className={forgotPasswordStyles.content}>
       <h2 className="text text_type_main-medium">Восстановление пароля</h2>
-      <form className={`${forgotPasswordStyles.form} mt-6 mb-20`}>
+      <form
+        onSubmit={forgetPasswordForm}
+        className={`${forgotPasswordStyles.form} mt-6 mb-20`}
+      >
         <EmailInput
           placeholder="Укажите e-mail"
           name={"email"}
           isIcon={false}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <Button onClick={reset} htmlType="button" type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium">
           Восстановить
         </Button>
       </form>

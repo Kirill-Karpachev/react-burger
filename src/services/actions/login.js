@@ -5,7 +5,7 @@ import {
   setCookie
 } from "../../utils/util";
 import {
-  getUser
+  USER_AUTH
 } from "./user";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -18,24 +18,19 @@ export function getLogin(form, replace) {
     dispatch({
       type: LOGIN_REQUEST,
     })
-    postLogin(form.email, form.password)
+    postLogin(form)
       .then(res => {
         if (res && res.success) {
           dispatch({
             type: LOGIN_SUCCESS,
             payload: res
           })
-          let accessToken;
-          let refreshToken;
-          accessToken = res.accessToken.split('Bearer ')[1]
-          refreshToken = res.refreshToken;
-
-          if (accessToken) {
-            setCookie('accessToken', accessToken);
-          }
-          if (refreshToken) {
-            setCookie('refreshToken', refreshToken)
-          }
+          dispatch({
+            type: USER_AUTH
+          })
+          setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
+          setCookie('refreshToken', res.refreshToken);
+          setCookie('time', Date.now() + (19 * 60 * 1000))
           replace();
         }
       }).catch(e => {

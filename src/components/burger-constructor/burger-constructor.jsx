@@ -28,6 +28,7 @@ function BurgerConstructor() {
   const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
   const user = useSelector((store) => store.user.user);
   const history = useHistory();
+  const { isAuth } = useSelector((store) => store.login);
 
   const orderPrice = useMemo(() => {
     return (
@@ -48,15 +49,14 @@ function BurgerConstructor() {
   }, [ingredients]);
 
   const openModal = () => {
-    if(user.email && user.name) {
+    if ((user.email && user.name) || isAuth) {
       dispatch(getOrderDetails(orderIngredients));
       dispatch({
         type: DELETE_ALL_INGREDIENTS,
       });
     } else {
-      history.replace({ pathname: '/login' })
+      history.replace({ pathname: "/login" });
     }
-
   };
 
   const closeModal = () => {

@@ -1,0 +1,31 @@
+.details {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20vh auto 10px;
+}
+
+.title {
+  text-align: start;
+}
+
+.ingredients {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+  gap: 20px;
+}
+
+.image {
+  width: 100%;
+  max-width: 480px;
+  min-height: 240px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

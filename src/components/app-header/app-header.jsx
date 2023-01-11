@@ -4,12 +4,13 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavigationItem from "../navigation-item/navigation-item";
 import headerStyles from "./app-header.module.css";
 
 function AppHeader() {
   const location = useLocation();
+
   return (
     <header className={`${headerStyles.header} pt-4 pb-4`}>
       <div className={headerStyles.container}>
@@ -29,20 +30,28 @@ function AppHeader() {
             <NavigationItem
               icon={
                 <ListIcon
-                  type={location.pathname === "/l" ? "primary" : "secondary"}
+                  type={
+                    location.pathname === "/order-list"
+                      ? "primary"
+                      : "secondary"
+                  }
                 />
               }
               text="Лента заказов"
-              path={{ pathname: "/l" }}
+              path={{ pathname: "/order-list" }}
             />
           </li>
         </ul>
-        <Logo />
+        <Link to={"/"}>
+          <Logo />
+        </Link>
         <div className={headerStyles.right}>
           <NavigationItem
             icon={
               <ProfileIcon
-                type={location.pathname === "/profile" ? "primary" : "secondary"}
+                type={
+                  location.pathname === "/profile" ? "primary" : "secondary"
+                }
               />
             }
             text="Личный кабинет"

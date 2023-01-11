@@ -19,7 +19,7 @@ function NavigationItem({ icon, text, path }) {
 NavigationItem.propTypes = {
   icon: PropTypes.element.isRequired,
   text: PropTypes.string.isRequired,
-  
+  path: PropTypes.object.isRequired,
 };
 
 export default NavigationItem;
