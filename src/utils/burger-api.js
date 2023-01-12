@@ -125,11 +125,9 @@ async function fetchWithRefresh(url, options) {
   } catch (e) {
     const error = await e.json();
     if (error.message === 'jwt expired') {
-      console.log(error)
       const refreshData = await postToken({
         token: getCookie("refreshToken")
       });
-      console.log(refreshData)
 
       setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1]);
       setCookie('refreshToken', refreshData.refreshToken);
