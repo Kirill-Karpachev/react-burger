@@ -2,14 +2,15 @@ import {
   NORMA_API
 } from './const'
 import {
-  getCookie
+  getCookie,
+  setCookie
 } from './util';
 
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Ошибка: ${res.status}`);
+  return Promise.reject(res.status);
 }
 
 export function getIngredients() {
@@ -31,25 +32,24 @@ export function postOrder(ingredients) {
 }
 
 export function getUserData() {
-  return fetch(`${NORMA_API}/auth/user`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: 'Bearer ' + getCookie('accessToken')
-      },
-    })
-    .then(checkResponse)
+  return fetchWithRefresh(`${NORMA_API}/auth/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+  })
 }
+
 export function patchUserData(form) {
-  return fetch(`${NORMA_API}/auth/user`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: 'Bearer ' + getCookie('accessToken')
-      },
-      body: JSON.stringify(form)
-    })
-    .then(checkResponse)
+  return fetchWithRefresh(`${NORMA_API}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    body: JSON.stringify(form)
+  })
 }
 
 export function postRegisterUser(form) {
@@ -118,4 +118,22 @@ export function postPassword(form) {
       body: JSON.stringify(form)
     })
     .then(checkResponse)
+}
+
+async function fetchWithRefresh(url, options) {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch (e) {
+    if (getCookie("time") <= Date.now()) {
+      const refreshData = await postToken();
+
+      setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1]);
+      setCookie('refreshToken', refreshData.refreshToken);
+      setCookie('time', Date.now() + (19 * 60 * 1000))
+
+      const res = await fetch(url, options);
+      return await checkResponse(res);
+    }
+  }
 }

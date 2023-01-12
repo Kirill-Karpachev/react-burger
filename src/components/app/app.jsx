@@ -15,10 +15,9 @@ import {
   IngredientPage,
 } from "../../pages/index";
 import ProtectedRoute from "../protected-route/protected-route";
-import { getUser, updateToken } from "../../services/actions/user";
+import { getUser } from "../../services/actions/user";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { getCookie } from "../../utils/util";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,12 +28,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getIngredientsData());
-    if (getCookie("time") <= Date.now()) {
-      dispatch(updateToken());
-      dispatch(getUser());
-    } else {
-      dispatch(getUser());
-    }
+    dispatch(getUser());
   }, [dispatch]);
 
   return (
@@ -44,26 +38,27 @@ function App() {
         <main className={appStyles.main}>
           <Switch location={background || location}>
             <Route path="/" component={Constructor} exact />
-            <ProtectedRoute onlyUnAuth={true} path="/login" exact>
+            <ProtectedRoute onlyUnAuth path="/login" exact>
               <Login />
             </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth={false} path="/profile" exact>
-              <Profile />
-            </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth={true} path="/register" exact>
+            <ProtectedRoute onlyUnAuth path="/register" exact>
               <Register />
             </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth={true} path="/forgot-password" exact>
+            <ProtectedRoute onlyUnAuth path="/forgot-password" exact>
               <ForgotPassword />
             </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth={true} path="/reset-password" exact>
+            <ProtectedRoute onlyUnAuth path="/reset-password" exact>
               <ResetPassword />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile" exact>
+              <Profile />
             </ProtectedRoute>
             <Route path="/ingredient/:id" children={<IngredientPage />} />
             <Route path="*" component={NotFound} />
           </Switch>
         </main>
       </StrictMode>
+
       {background && (
         <Route
           path="/ingredient/:id"

@@ -4,10 +4,10 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { signOut, updateToken, updateUser } from "../../services/actions/user";
+import { getUser, signOut, updateUser } from "../../services/actions/user";
 import { getCookie } from "../../utils/util";
 import profileStyles from "./profile.module.css";
 
@@ -28,7 +28,6 @@ function Profile() {
       email: emailValue,
     };
     dispatch(updateUser(form));
-    dispatch(updateToken());
   };
 
   const resetUserForm = () => {

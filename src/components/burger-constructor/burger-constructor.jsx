@@ -26,9 +26,8 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredientsConstructor);
   const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
-  const user = useSelector((store) => store.user.user);
   const history = useHistory();
-  const { isAuth } = useSelector((store) => store.login);
+  const { isAuth } = useSelector((store) => store.user);
 
   const orderPrice = useMemo(() => {
     return (
@@ -49,7 +48,7 @@ function BurgerConstructor() {
   }, [ingredients]);
 
   const openModal = () => {
-    if ((user.email && user.name) || isAuth) {
+    if (isAuth) {
       dispatch(getOrderDetails(orderIngredients));
       dispatch({
         type: DELETE_ALL_INGREDIENTS,

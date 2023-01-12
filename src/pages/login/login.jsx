@@ -22,7 +22,8 @@ function Login() {
       email,
       password,
     };
-    dispatch(getLogin(form, () => history.replace("/")));
+    dispatch(getLogin(form));
+    history.replace("/");
   };
 
   return (
