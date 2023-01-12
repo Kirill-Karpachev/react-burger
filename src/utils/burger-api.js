@@ -10,7 +10,7 @@ function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(res.status);
+  return Promise.reject(res);
 }
 
 export function getIngredients() {
@@ -123,17 +123,21 @@ async function fetchWithRefresh(url, options) {
     const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (e) {
-    if (getCookie("time") <= Date.now()) {
+    const error = await e.json();
+    if (error.message === 'jwt expired') {
+      console.log(error)
       const refreshData = await postToken({
         token: getCookie("refreshToken")
       });
+      console.log(refreshData)
 
       setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1]);
       setCookie('refreshToken', refreshData.refreshToken);
       setCookie('time', Date.now() + (19 * 60 * 1000))
 
-      const res = await fetch(url, options);
-      return await checkResponse(res);
+      options.headers.Authorization = refreshData.accessToken;
     }
+    const res = await fetch(url, options);
+    return await checkResponse(res);
   }
 }
