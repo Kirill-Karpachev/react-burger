@@ -85,15 +85,13 @@ export function postLogin(form) {
     .then(checkResponse)
 }
 
-export function postToken() {
+export function postToken(token) {
   return fetch(`${NORMA_API}/auth/token`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        token: getCookie("refreshToken")
-      })
+      body: JSON.stringify(token)
     })
     .then(checkResponse)
 }
@@ -126,7 +124,9 @@ async function fetchWithRefresh(url, options) {
     return await checkResponse(res);
   } catch (e) {
     if (getCookie("time") <= Date.now()) {
-      const refreshData = await postToken();
+      const refreshData = await postToken({
+        token: getCookie("refreshToken")
+      });
 
       setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1]);
       setCookie('refreshToken', refreshData.refreshToken);
