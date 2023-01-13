@@ -134,8 +134,9 @@ async function fetchWithRefresh(url, options) {
       setCookie('time', Date.now() + (19 * 60 * 1000))
 
       options.headers.Authorization = refreshData.accessToken;
+
+      const res = await fetch(url, options);
+      return await checkResponse(res);
     }
-    const res = await fetch(url, options);
-    return await checkResponse(res);
   }
 }
