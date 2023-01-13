@@ -1,0 +1,17 @@
+.content {
+  margin: 20vh auto 10px;
+  text-align: center;
+}
+
+.digits {
+  font-size: 300px;
+}
+
+.link {
+  color: #4C4CFF;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #4c4cffc2;
+}

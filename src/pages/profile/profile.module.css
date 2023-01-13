@@ -1,0 +1,46 @@
+.content {
+  margin: 20vh auto 10px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  width: 100%;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 320px;
+}
+
+.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  text-decoration: none;
+  background: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #F2F2F3;
+}
+
+.item {
+  margin: 18px 0;
+}
+
+.active {
+  color: #F2F2F3
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
