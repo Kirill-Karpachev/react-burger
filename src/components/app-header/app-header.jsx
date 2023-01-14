@@ -24,21 +24,19 @@ function AppHeader() {
               }
               text="Конструктор"
               path={{ pathname: "/" }}
+              exact
             />
           </li>
           <li>
             <NavigationItem
               icon={
                 <ListIcon
-                  type={
-                    location.pathname === "/order-list"
-                      ? "primary"
-                      : "secondary"
-                  }
+                  type={location.pathname === "/feed" ? "primary" : "secondary"}
                 />
               }
               text="Лента заказов"
-              path={{ pathname: "/order-list" }}
+              path={{ pathname: "/feed" }}
+              exact
             />
           </li>
         </ul>
@@ -50,7 +48,10 @@ function AppHeader() {
             icon={
               <ProfileIcon
                 type={
-                  location.pathname === "/profile" ? "primary" : "secondary"
+                  location.pathname === "/profile" ||
+                  location.pathname === "/profile/orders"
+                    ? "primary"
+                    : "secondary"
                 }
               />
             }

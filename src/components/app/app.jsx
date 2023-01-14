@@ -18,6 +18,7 @@ import ProtectedRoute from "../protected-route/protected-route";
 import { getUser } from "../../services/actions/user";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import ProfileOrders from "../../pages/profile-orders/profile-orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ function App() {
         <main className={appStyles.main}>
           <Switch location={background || location}>
             <Route path="/" component={Constructor} exact />
+            <Route path="/feed" exact />
+            <Route path="/feed/:id" exact />
             <ProtectedRoute onlyUnAuth path="/login" exact>
               <Login />
             </ProtectedRoute>
@@ -50,7 +53,10 @@ function App() {
             <ProtectedRoute onlyUnAuth path="/reset-password" exact>
               <ResetPassword />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile" exact>
+            <ProtectedRoute path="/profile">
+              <Profile />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile/orders/:id" exact>
               <Profile />
             </ProtectedRoute>
             <Route path="/ingredient/:id" children={<IngredientPage />} />
