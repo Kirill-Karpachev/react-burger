@@ -1,27 +1,27 @@
-.orders {
-  margin: 40px 0 0 0;
+.list {
+  margin: 0 60px 0 0;
   padding: 0 8px 0 0;
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: scroll;
-  max-height: 83vh;
+  max-height: 77vh;
   box-sizing: border-box;
   min-width: 600px;
 }
 
-.orders::-webkit-scrollbar {
+.list::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.orders::-webkit-scrollbar-thumb {
+.list::-webkit-scrollbar-thumb {
   background: #8585AD;
   height: 150px;
 }
 
-.orders::-webkit-scrollbar-track {
+.list::-webkit-scrollbar-track {
   background: #2F2F37;
   margin-bottom: 52px;
 }

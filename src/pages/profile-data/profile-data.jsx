@@ -33,7 +33,7 @@ function ProfileData() {
   };
 
   return (
-    <form onSubmit={updateUserForm}>
+    <form className={profileDataStyles.form} onSubmit={updateUserForm}>
       <Input
         type={"text"}
         placeholder={"Имя"}

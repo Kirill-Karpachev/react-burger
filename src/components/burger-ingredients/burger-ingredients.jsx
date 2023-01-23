@@ -36,7 +36,6 @@ function BurgerIngredients() {
 
   return (
     <section className={burgerIngredientStyle.section}>
-      <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
       <div className="mb-10" style={{ display: "flex" }}>
         {ingredientsTypes.map((ingredientType) => (
           <Tab
@@ -63,7 +62,9 @@ function BurgerIngredients() {
               className={`${burgerIngredientStyle.column} mb-10`}
             >
               {ingredients
-                ?.filter((ingredient) => ingredient.type === ingredientType.type)
+                ?.filter(
+                  (ingredient) => ingredient.type === ingredientType.type
+                )
                 .map((ingredient) => (
                   <Ingredient ingredient={ingredient} key={ingredient._id} />
                 ))}

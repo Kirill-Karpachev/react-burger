@@ -23,6 +23,7 @@ export function postOrder(ingredients) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: 'Bearer ' + getCookie('accessToken')
       },
       body: JSON.stringify({
         "ingredients": ingredients

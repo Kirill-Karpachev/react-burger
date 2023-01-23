@@ -2,7 +2,7 @@ import { StrictMode, useEffect } from "react";
 import { Switch, Route, useLocation, useHistory } from "react-router-dom";
 import AppHeader from "../app-header/app-header";
 import appStyles from "./app.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getIngredientsData } from "../../services/actions/ingredients";
 import Constructor from "../../pages/constructor/constructor";
 import {
@@ -13,18 +13,19 @@ import {
   Profile,
   NotFound,
   IngredientPage,
+  Feed,
+  OrderInfo,
 } from "../../pages/index";
 import ProtectedRoute from "../protected-route/protected-route";
 import { getUser } from "../../services/actions/user";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import ProfileOrders from "../../pages/profile-orders/profile-orders";
+import OrderModal from "../order-modal/order-modal";
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-
   const background = location.state?.background;
 
   useEffect(() => {
@@ -39,26 +40,37 @@ function App() {
         <main className={appStyles.main}>
           <Switch location={background || location}>
             <Route path="/" component={Constructor} exact />
-            <Route path="/feed" exact />
-            <Route path="/feed/:id" exact />
-            <ProtectedRoute onlyUnAuth path="/login" exact>
-              <Login />
-            </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth path="/register" exact>
-              <Register />
-            </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth path="/forgot-password" exact>
-              <ForgotPassword />
-            </ProtectedRoute>
-            <ProtectedRoute onlyUnAuth path="/reset-password" exact>
-              <ResetPassword />
-            </ProtectedRoute>
-            <ProtectedRoute path="/profile">
-              <Profile />
-            </ProtectedRoute>
-            <ProtectedRoute path="/profile/orders/:id" exact>
-              <Profile />
-            </ProtectedRoute>
+            <Route path="/feed" component={Feed} exact />
+            <Route path="/feed/:id" children={<OrderInfo />} />
+            <ProtectedRoute
+              path="/profile/orders/:id"
+              children={<OrderInfo />}
+            />
+            <ProtectedRoute
+              onlyUnAuth
+              path="/login"
+              children={<Login />}
+              exact
+            />
+            <ProtectedRoute
+              onlyUnAuth
+              path="/register"
+              children={<Register />}
+              exact
+            />
+            <ProtectedRoute
+              onlyUnAuth
+              path="/forgot-password"
+              children={<ForgotPassword />}
+              exact
+            />
+            <ProtectedRoute
+              onlyUnAuth
+              path="/reset-password"
+              children={<ResetPassword />}
+              exact
+            />
+            <ProtectedRoute path="/profile" children={<Profile />} />
             <Route path="/ingredient/:id" children={<IngredientPage />} />
             <Route path="*" component={NotFound} />
           </Switch>
@@ -71,6 +83,28 @@ function App() {
           children={
             <Modal onClose={() => history.goBack()}>
               <IngredientDetails />
+            </Modal>
+          }
+        />
+      )}
+
+      {background && (
+        <Route
+          path="/feed/:id"
+          children={
+            <Modal onClose={() => history.goBack()}>
+              <OrderModal />
+            </Modal>
+          }
+        />
+      )}
+
+      {background && (
+        <Route
+          path="/profile/orders/:id"
+          children={
+            <Modal onClose={() => history.goBack()}>
+              <OrderModal />
             </Modal>
           }
         />
