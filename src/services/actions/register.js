@@ -1,6 +1,9 @@
 import {
   postRegisterUser
 } from "../../utils/burger-api";
+import {
+  setCookie
+} from "../../utils/util";
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -18,6 +21,11 @@ export function registerUser(form, replace) {
             type: REGISTER_SUCCESS,
             payload: res
           })
+          console.log(res)
+          setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
+          setCookie('refreshToken', res.refreshToken);
+          setCookie('time', Date.now() + (19 * 60 * 1000))
+
           replace()
         }
       })

@@ -60,7 +60,7 @@ export function postRegisterUser(form) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(form)
-  })
+  }).then(checkResponse)
 }
 
 export function logoutUser(refreshToken) {

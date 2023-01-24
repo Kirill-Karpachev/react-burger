@@ -25,7 +25,7 @@ function Register() {
       email,
       password,
     };
-    dispatch(registerUser(form, () => history.replace("/login")));
+    dispatch(registerUser(form, history.replace("/login")));
   };
 
   return (
