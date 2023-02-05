@@ -4,26 +4,20 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { getLogin } from "../../services/actions/login";
 import loginStyles from "./login.module.css";
+import { useForm } from "../../utils/use-form";
 
 function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { values, handleChange } = useForm({ email: "", password: "" });
 
   const signIn = (e) => {
     e.preventDefault();
-    const form = {
-      email,
-      password,
-    };
-    dispatch(getLogin(form));
-    history.replace("/");
+    dispatch(getLogin(values, history.replace("/")));
   };
 
   return (
@@ -31,14 +25,14 @@ function Login() {
       <h2 className="text text_type_main-medium">Вход</h2>
       <form onSubmit={signIn} className={`${loginStyles.form} mt-6 mb-20`}>
         <EmailInput
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          onChange={(e) => handleChange(e)}
+          value={values.email}
           name={"email"}
           isIcon={false}
         />
         <PasswordInput
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
+          onChange={(e) => handleChange(e)}
+          value={values.password}
           name={"password"}
         />
         <Button htmlType="submit" type="primary" size="medium">

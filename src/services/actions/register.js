@@ -21,7 +21,7 @@ export function registerUser(form, replace) {
             type: REGISTER_SUCCESS,
             payload: res
           })
-          console.log(res)
+          
           setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
           setCookie('refreshToken', res.refreshToken);
           setCookie('time', Date.now() + (19 * 60 * 1000))

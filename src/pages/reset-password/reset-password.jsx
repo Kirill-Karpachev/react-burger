@@ -4,26 +4,21 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import { useState } from "react";
 import resetPasswordStyles from "./reset-password.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { recoverPassword } from "../../services/actions/reset-password";
+import { useForm } from "../../utils/use-form";
 
 function ResetPassword() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
+  const { values, handleChange } = useForm({ email: "", token: "" });
   const { successEmail } = useSelector((store) => store.resetPassword);
 
   const resetPasswordForm = (e) => {
     e.preventDefault();
-    const form = {
-      password,
-      token,
-    };
-    dispatch(recoverPassword(form, () => history.replace("/login")));
+    dispatch(recoverPassword(values, () => history.replace("/login")));
   };
 
   if (!successEmail) {
@@ -40,16 +35,17 @@ function ResetPassword() {
         <PasswordInput
           placeholder="Введите новый пароль"
           name={"password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={values.password}
+          onChange={(e) => handleChange(e)}
         />
         <Input
           type={"text"}
           placeholder={"Введите код из письма"}
           errorText={"Ошибка"}
           size={"default"}
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
+          name={"token"}
+          value={values.token}
+          onChange={(e) => handleChange(e)}
         />
         <Button htmlType="submit" type="primary" size="medium">
           Сохранить

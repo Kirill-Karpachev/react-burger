@@ -7,29 +7,26 @@ import {
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../services/actions/user";
+import { useForm } from "../../utils/use-form";
 import profileDataStyles from "./profile-data.module.css";
 
 function ProfileData() {
   const dispatch = useDispatch();
-
   const { name, email } = useSelector((store) => store.user.user);
+  const { values, handleChange, setValues } = useForm({
+    name: name,
+    email: email,
+  });
 
-  const [nameValue, setNameValue] = useState(name);
-  const [emailValue, setEmailValue] = useState(email);
   const [disabled, setDisabled] = useState(true);
 
   const updateUserForm = (e) => {
     e.preventDefault();
-    const form = {
-      name: nameValue,
-      email: emailValue,
-    };
-    dispatch(updateUser(form));
+    dispatch(updateUser(values));
   };
 
   const resetUserForm = () => {
-    setNameValue(name);
-    setEmailValue(email);
+    setValues({ name: name, email: email });
   };
 
   return (
@@ -44,8 +41,8 @@ function ProfileData() {
         size={"default"}
         onIconClick={(e) => setDisabled(false)}
         extraClass="mb-6"
-        value={nameValue}
-        onChange={(e) => setNameValue(e.target.value)}
+        value={values.name}
+        onChange={(e) => handleChange(e)}
         disabled={disabled}
       />
       <EmailInput
@@ -53,8 +50,8 @@ function ProfileData() {
         placeholder="Логин"
         isIcon={true}
         extraClass="mb-6"
-        onChange={(e) => setEmailValue(e.target.value)}
-        value={emailValue}
+        onChange={(e) => handleChange(e)}
+        value={values.email}
       />
       <PasswordInput
         name={"password"}
@@ -63,7 +60,7 @@ function ProfileData() {
         extraClass="mb-6"
         onChange={(e) => e}
       />
-      {!(name === nameValue && email === emailValue) && (
+      {!(name === values.name && email === values.email) && (
         <div className={profileDataStyles.buttons}>
           <Button
             onClick={resetUserForm}
