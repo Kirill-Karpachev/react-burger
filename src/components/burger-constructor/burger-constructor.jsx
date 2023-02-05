@@ -25,10 +25,9 @@ import { useHistory } from "react-router-dom";
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((store) => store.ingredientsConstructor);
-  const orderDetails = useSelector((store) => store.orderDetails.orderDetails);
+  const { orderDetails } = useSelector((store) => store.orderDetails);
   const history = useHistory();
   const { isAuth } = useSelector((store) => store.user);
-
   const orderPrice = useMemo(() => {
     return (
       (ingredients.bun ? ingredients.bun.price * 2 : 0) +
@@ -86,7 +85,7 @@ function BurgerConstructor() {
   return (
     <>
       <section
-        className={`${burgerConstructorStyles.section} mt-25`}
+        className={`${burgerConstructorStyles.section}`}
         ref={dropTarget}
       >
         <div

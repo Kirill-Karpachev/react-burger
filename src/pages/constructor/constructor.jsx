@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import constructorStyles from "./constructor.module.css";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
+import loading from "../../images/loadingBun.svg";
 
 function Constructor() {
   const error = useSelector((store) => store.ingredients.ingredientsFailed);
-
+  const { orderDetailsRequest } = useSelector((store) => store.orderDetails);
   return (
     <>
       {error ? (
@@ -15,10 +16,23 @@ function Constructor() {
           Ошибка загрузки данных.
         </p>
       ) : (
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
+        <>
+          <h1 className="text text_type_main-large mt-10 mb-5">
+            Соберите бургер
+          </h1>
+          <div className={constructorStyles.content}>
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </DndProvider>
+          </div>
+        </>
+      )}
+
+      {orderDetailsRequest && (
+        <div className={constructorStyles.loading}>
+          <img src={loading} alt="" />
+        </div>
       )}
     </>
   );

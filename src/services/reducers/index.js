@@ -2,6 +2,9 @@ import {
   combineReducers
 } from 'redux';
 import {
+  feedReducer
+} from './feed';
+import {
   ingredientsDetailsReducer
 } from './ingredient-details';
 import {
@@ -17,6 +20,9 @@ import {
   orderDetailsReducer
 } from './order-details';
 import {
+  profileOrdersReducer
+} from './profile-orders';
+import {
   resetPasswordReducer
 } from './reset-password';
 import {
@@ -31,4 +37,6 @@ export const rootReducer = combineReducers({
   login: loginReducer,
   user: userReducer,
   resetPassword: resetPasswordReducer,
+  feed: feedReducer,
+  profileOrders: profileOrdersReducer
 });

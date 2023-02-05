@@ -14,7 +14,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGIN_FORM = 'LOGIN_FORM';
 
-export function getLogin(form) {
+export function getLogin(form, replace) {
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
@@ -37,6 +37,8 @@ export function getLogin(form) {
           setCookie('accessToken', res.accessToken.split('Bearer ')[1]);
           setCookie('refreshToken', res.refreshToken);
           setCookie('time', Date.now() + (19 * 60 * 1000))
+
+          replace()
         }
       }).catch(e => {
         dispatch({

@@ -1,16 +1,11 @@
 .content {
-  margin: 20vh auto 10px;
+  margin: 0 auto 10px;
   display: flex;
-  position: relative;
-  justify-content: center;
-  width: 100%;
 }
 
 .menu {
-  position: absolute;
-  top: 0;
-  left: 0;
   max-width: 320px;
+  margin: 20vh 60px 0 0;
 }
 
 .nav {
@@ -40,7 +35,6 @@
   color: #F2F2F3
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end;
+.main {
+  width: 100%;
 }

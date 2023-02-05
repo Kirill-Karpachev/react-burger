@@ -1,3 +1,9 @@
+import {
+  format,
+  isToday,
+  isYesterday
+} from "date-fns";
+
 export function getCookie(name) {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
@@ -33,3 +39,13 @@ export function deleteCookie(name) {
     expires: -1
   });
 }
+
+export const currentDate = (date) => {
+  if (isToday(date)) {
+    return 'Сегодня'
+  } else if (isYesterday(date)) {
+    return 'Вчера'
+  } else {
+    return format((date), 'dd.MM.yyyy');
+  }
+};

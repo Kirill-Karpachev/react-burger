@@ -2,22 +2,20 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { forgetPassword } from "../../services/actions/reset-password";
+import { useForm } from "../../utils/use-form";
 import forgotPasswordStyles from "./forgot-password.module.css";
 
 function ForgotPassword() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
+  const { values, handleChange } = useForm({ email: "" });
 
   const forgetPasswordForm = (e) => {
     e.preventDefault();
-    dispatch(
-      forgetPassword({ email: email }, () => history.replace("/reset-password"))
-    );
+    dispatch(forgetPassword(values, () => history.replace("/reset-password")));
   };
 
   return (
@@ -31,8 +29,8 @@ function ForgotPassword() {
           placeholder="Укажите e-mail"
           name={"email"}
           isIcon={false}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={values.email}
+          onChange={(e) => handleChange(e)}
         />
         <Button htmlType="submit" type="primary" size="medium">
           Восстановить

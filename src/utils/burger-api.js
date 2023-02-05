@@ -13,22 +13,25 @@ function checkResponse(res) {
   return Promise.reject(res);
 }
 
+function request(url, options) {
+  return fetch(url, options).then(checkResponse)
+}
+
 export function getIngredients() {
-  return fetch(`${NORMA_API}/ingredients`)
-    .then(checkResponse)
+  return request(`${NORMA_API}/ingredients`)
 }
 
 export function postOrder(ingredients) {
-  return fetch(`${NORMA_API}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        "ingredients": ingredients
-      }),
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    body: JSON.stringify({
+      "ingredients": ingredients
+    }),
+  })
 }
 
 export function getUserData() {
@@ -53,7 +56,7 @@ export function patchUserData(form) {
 }
 
 export function postRegisterUser(form) {
-  return fetch(`${NORMA_API}/auth/register`, {
+  return request(`${NORMA_API}/auth/register`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
@@ -63,59 +66,54 @@ export function postRegisterUser(form) {
 }
 
 export function logoutUser(refreshToken) {
-  return fetch(`${NORMA_API}/auth/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(refreshToken)
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/auth/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(refreshToken)
+  })
 }
 
 export function postLogin(form) {
-  return fetch(`${NORMA_API}/auth/login`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: 'Bearer ' + getCookie('accessToken')
-      },
-      body: JSON.stringify(form)
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/auth/login`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + getCookie('accessToken')
+    },
+    body: JSON.stringify(form)
+  })
 }
 
 export function postToken(token) {
-  return fetch(`${NORMA_API}/auth/token`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(token)
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/auth/token`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(token)
+  })
 }
 
 export function postEmail(form) {
-  return fetch(`${NORMA_API}/password-reset`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form)
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/password-reset`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(form)
+  })
 }
 
 export function postPassword(form) {
-  return fetch(`${NORMA_API}/password-reset/reset`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form)
-    })
-    .then(checkResponse)
+  return request(`${NORMA_API}/password-reset/reset`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(form)
+  })
 }
 
 async function fetchWithRefresh(url, options) {
