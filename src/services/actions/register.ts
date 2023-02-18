@@ -12,7 +12,12 @@ export interface IRegisterRequestAction {
 
 export interface IRegisterSuccessAction {
   readonly type: typeof REGISTER_SUCCESS;
-  readonly payload: any;
+  readonly payload: {
+    accessToken: string;
+    refreshToken: string;
+    success: boolean;
+    user: { email: string; name: string; password: string };
+  };
 }
 
 export interface IRegisterFailedAction {

@@ -20,7 +20,7 @@ type TStuffingElement = {
 const StuffingElement: FC<TStuffingElement> = ({ ingredient, index }) => {
   const ref = useRef<HTMLLIElement>(null);
   const dispatch = useDispatch();
-  const id: any = ingredient.id;
+  const id: string = ingredient.id!;
 
   const [, dropRef] = useDrop({
     accept: "stuffing",

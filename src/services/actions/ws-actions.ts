@@ -1,3 +1,5 @@
+import { TFeed } from "../../types/types";
+
 export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
 export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
   "WS_CONNECTION_SUCCESS";
@@ -26,7 +28,7 @@ export interface IWsConnectionClosedAction {
 
 export interface IWsGetOrdersAction {
   readonly type: typeof WS_GET_ORDERS;
-  readonly payload: any;
+  readonly payload: { orders: Array<TFeed>; total: number; totalToday: number };
 }
 
 export interface IWsSendOrdersAction {

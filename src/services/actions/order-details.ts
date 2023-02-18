@@ -16,7 +16,21 @@ export interface IOrderDetailsRequestAction {
 
 export interface IOrderDetailsSuccessAction {
   readonly type: typeof ORDER_DETAILS_SUCCESS;
-  readonly payload: any;
+  readonly payload: {
+    success: boolean;
+    name: string;
+    _id: string;
+    order: {
+      ingredients: [];
+      owner: {};
+      status: string;
+      name: string;
+      createdAt: string;
+      updatedAt: string;
+      number: number;
+      price: number;
+    };
+  };
 }
 
 export interface IOrderDetailsFailedAction {
@@ -33,7 +47,7 @@ export type TOrderDetailsActions =
   | IOrderDetailsFailedAction
   | IRemoveOrderDetailsAction;
 
-export function getOrderDetails(ingredients: Array<any>) {
+export function getOrderDetails(ingredients: Array<string | undefined>) {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: ORDER_DETAILS_REQUEST,

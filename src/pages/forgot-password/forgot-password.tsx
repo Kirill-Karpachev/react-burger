@@ -31,7 +31,7 @@ const ForgotPassword: FC = () => {
           name={"email"}
           isIcon={false}
           value={values.email}
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
         />
         <Button htmlType="submit" type="primary" size="medium">
           Восстановить

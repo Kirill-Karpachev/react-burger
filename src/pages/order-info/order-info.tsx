@@ -51,6 +51,7 @@ const OrderInfo: FC = () => {
   } else if (location.pathname === `/profile/orders/${id}`) {
     itemData = userOrders;
   }
+
   const order = itemData?.find((order: TFeed) => order._id === id);
   const ingredients = order?.ingredients?.map((id: string) =>
     ingredientsData?.find((ingredient) => ingredient._id === id)

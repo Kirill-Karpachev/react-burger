@@ -38,7 +38,7 @@ const FeedCard: FC<TFeedCard> = ({
   const price = useMemo(
     () =>
       ingredientsList?.reduce(
-        (previous, current) => previous + current?.price,
+        (previous, current) => previous + current?.price!,
         0
       ),
     [ingredientsList]

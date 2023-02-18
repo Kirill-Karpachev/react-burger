@@ -8,7 +8,12 @@ import {
 type TRegister = {
   registerRequest: boolean;
   registerFailed: boolean;
-  form: null | { name: string; email: string; password: string };
+  form: null | {
+    accessToken: string;
+    refreshToken: string;
+    success: boolean;
+    user: { name: string; email: string; password: string };
+  };
 };
 
 const initialState: TRegister = {

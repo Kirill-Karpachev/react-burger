@@ -5,7 +5,7 @@ import { useSelector } from "../../utils/hooks";
 
 const FeedList: FC = () => {
   const { orders } = useSelector((store) => store.feed);
-  
+
   return (
     <ul className={feedListStyles.list}>
       {orders?.map((order) => (

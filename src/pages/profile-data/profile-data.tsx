@@ -43,7 +43,7 @@ const ProfileData: FC = () => {
         onIconClick={() => setDisabled(false)}
         extraClass="mb-6"
         value={values.name}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         disabled={disabled}
       />
       <EmailInput
@@ -51,7 +51,7 @@ const ProfileData: FC = () => {
         placeholder="Логин"
         isIcon={true}
         extraClass="mb-6"
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         value={values.email}
       />
       <PasswordInput

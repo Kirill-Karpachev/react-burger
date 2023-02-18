@@ -35,7 +35,13 @@ export interface IUserRequestAction {
 
 export interface IUserSuccessAction {
   readonly type: typeof USER_SUCCESS;
-  readonly payload: any;
+  readonly payload: {
+    success: boolean;
+    user: {
+      email: string;
+      name: string;
+    };
+  };
 }
 
 export interface IUserFailedAction {
@@ -76,7 +82,13 @@ export interface IUpdateUserRequestAction {
 
 export interface IUpdateUserSuccessAction {
   readonly type: typeof UPDATE_USER_SUCCESS;
-  readonly payload: any;
+  readonly payload: {
+    success: boolean;
+    user: {
+      email: string;
+      name: string;
+    };
+  };
 }
 
 export interface IUpdateUserFailedAction {
@@ -155,7 +167,7 @@ export function updateUser(form: { email: string; name: string }) {
   };
 }
 
-export function updateToken(token: any) {
+export function updateToken(token: { token: string }) {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: UPDATE_TOKEN_REQUEST,
@@ -179,7 +191,10 @@ export function updateToken(token: any) {
   };
 }
 
-export function signOut(refreshToken: { token: string | undefined }, replace: () => void) {
+export function signOut(
+  refreshToken: { token: string | undefined },
+  replace: () => void
+) {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_LOGOUT_REQUEST,

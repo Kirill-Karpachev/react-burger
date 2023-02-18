@@ -4,7 +4,7 @@ import ReactDom from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import styleModal from "./modal.module.css";
 import { FC } from "react";
-const modalContainer: any = document.querySelector("#popup");
+const modalContainer = document.querySelector("#popup") as HTMLElement;
 
 type TModal = {
   onClose: () => void;

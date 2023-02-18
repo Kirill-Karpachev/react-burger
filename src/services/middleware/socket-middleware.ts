@@ -1,3 +1,5 @@
+import { Middleware } from "@reduxjs/toolkit";
+import { RootState } from "../../types";
 import { getCookie } from "../../utils/util";
 
 type TWSActions = {
@@ -9,15 +11,15 @@ type TWSActions = {
   wsSendOrders: string;
 };
 
-export const socketMiddleware = (
+export const socketMiddleware: any = (
   wsUrl: string,
   wsActions: TWSActions,
   auth: boolean
-) => {
-  return (store: any) => {
-    let socket: any = null;
+): Middleware<{}, RootState> => {
+  return (store) => {
+    let socket: WebSocket | null = null;
 
-    return (next: any) => (action: any) => {
+    return (next) => (action) => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { wsInit, onOpen, onClose, onError, onOrders, wsSendOrders } =
@@ -30,21 +32,21 @@ export const socketMiddleware = (
         socket = new WebSocket(`${wsUrl}?token=${accessToken}`);
       }
       if (socket) {
-        socket.onopen = (event: any) => {
+        socket.onopen = (event: Event) => {
           dispatch({
             type: onOpen,
             payload: event,
           });
         };
 
-        socket.onerror = (event: any) => {
+        socket.onerror = (event: Event) => {
           dispatch({
             type: onError,
             payload: event,
           });
         };
 
-        socket.onmessage = (event: any) => {
+        socket.onmessage = (event: MessageEvent<any>) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           const { success, ...restParsedData } = parsedData;
@@ -55,7 +57,7 @@ export const socketMiddleware = (
           });
         };
 
-        socket.onclose = (event: any) => {
+        socket.onclose = (event: CloseEvent) => {
           dispatch({
             type: onClose,
             payload: event,

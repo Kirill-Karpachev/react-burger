@@ -1,4 +1,3 @@
-import { TIngredient } from "../types/types";
 import { NORMA_API } from "./const";
 import { getCookie, setCookie } from "./util";
 
@@ -17,7 +16,7 @@ export function getIngredients() {
   return request(`${NORMA_API}/ingredients`);
 }
 
-export function postOrder(ingredients: Array<TIngredient>) {
+export function postOrder(ingredients: Array<string | undefined>) {
   return request(`${NORMA_API}/orders`, {
     method: "POST",
     headers: {
@@ -86,7 +85,7 @@ export function postLogin(form: { email: string; password: string }) {
   });
 }
 
-export function postToken(token: any) {
+export function postToken(token: { token: string | undefined }) {
   return request(`${NORMA_API}/auth/token`, {
     method: "POST",
     headers: {

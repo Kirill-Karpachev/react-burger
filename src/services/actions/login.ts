@@ -14,7 +14,15 @@ export interface ILoginRequestAction {
 
 export interface ILoginSuccessAction {
   readonly type: typeof LOGIN_SUCCESS;
-  readonly payload: any;
+  readonly payload: {
+    accessToken: string;
+    refreshToken: string;
+    success: boolean;
+    user: {
+      email: string;
+      name: string;
+    };
+  };
 }
 
 export interface ILoginFailedAction {
@@ -23,7 +31,15 @@ export interface ILoginFailedAction {
 
 export interface ILoginFormAction {
   readonly type: typeof LOGIN_FORM;
-  readonly payload: any;
+  readonly payload: {
+    accessToken: string;
+    refreshToken: string;
+    success: boolean;
+    user: {
+      email: string;
+      name: string;
+    };
+  };
 }
 
 export type TLoginActions =

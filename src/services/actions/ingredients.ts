@@ -1,4 +1,5 @@
 import { AppDispatch } from "../../types";
+import { TIngredient } from "../../types/types";
 import { getIngredients } from "../../utils/burger-api";
 
 export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" =
@@ -14,7 +15,7 @@ export interface IGetIngredientsRequestAction {
 
 export interface IGetIngredientsSuccessAction {
   readonly type: typeof GET_INGREDIENTS_SUCCESS;
-  readonly payload: any;
+  readonly payload: Array<TIngredient>;
 }
 
 export interface IGetIngredientsFailedAction {

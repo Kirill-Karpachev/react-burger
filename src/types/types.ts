@@ -2,7 +2,7 @@ export type TIngredient = {
   readonly _id: string;
   readonly name: string;
   readonly type: "bun" | "main" | "sauce";
-  readonly price: any;
+  readonly price: number;
   readonly image: string;
   readonly image_large: string;
   readonly image_mobile: string;

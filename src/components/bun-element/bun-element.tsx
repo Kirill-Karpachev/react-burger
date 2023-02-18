@@ -17,7 +17,7 @@ const BunElement: FC<{ type: "top" | "bottom" | undefined }> = ({ type }) => {
             ? `${bun?.name} ${type === "top" ? "(верх)" : "(низ)"}`
             : "Выберите булку"
         }
-        price={bun?.price}
+        price={bun?.price!}
         thumbnail={bun?.image ? bun.image : loadingBun}
       />
     </div>
