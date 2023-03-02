@@ -60,6 +60,8 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
-    "gh-pages": "^4.0.0"
+    "@types/uuid": "^9.0.0",
+    "gh-pages": "^4.0.0",
+    "typescript-plugin-css-modules": "^4.1.1"
   }
 }
