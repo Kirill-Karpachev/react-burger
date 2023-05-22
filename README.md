@@ -1,8 +1,12 @@
 # Проект: StellarBurgers
 
-### `npm start`
+Учебный проект космической бургерной. При создании этого проекта была использована следующие технологии: TypeScript, React, Redux Toolkit.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Чтобы запустить проект: 
+
+- склонируйте репозиторий
+- установите зависимости командой `npm i`
+- запустите проект командой `npm start`
+- перейдите по адресу http://localhost:3000
 
 Ссылка на GitHub Pages: [StellarBurgers](https://kirill-karpachev.github.io/react-burger/)
