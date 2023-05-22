@@ -1,4 +1,3 @@
-
 # Проект: StellarBurgers
 
 ### `npm start`
